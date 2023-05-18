@@ -47,7 +47,7 @@ class DioHelper extends DioBuilder{
 }
 ```
 
-# function
+# function inside
 
 ```groovy
   /// allow to log the http request and response in terminal with single line
