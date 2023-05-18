@@ -1,0 +1,45 @@
+name: dio_builder
+description: Dio builder is support plugin for dio. It's  build using builder pattern.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  dio: ^5.1.2
+  pretty_dio_logger: ^1.3.1
+  dio_intercept_to_curl: ^0.1.0
+  dio_smart_retry: ^5.0.0
+  http_certificate_pinning: ^2.0.7
+  chucker_flutter: ^1.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+
+# The following section is specific to Flutter packages.
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.gsamir.dio_builder.dio_builder
+        pluginClass: DioBuilderPlugin
+      ios:
+        pluginClass: DioBuilderPlugin
+      linux:
+        pluginClass: DioBuilderPlugin
+      macos:
+        pluginClass: DioBuilderPlugin
+      windows:
+        pluginClass: DioBuilderPluginCApi
+      web:
+        pluginClass: DioBuilderWeb
+        fileName: dio_builder_web.dart
