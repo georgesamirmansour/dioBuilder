@@ -1,7 +1,6 @@
 
 import 'dart:io';
 
-import 'dio_builder_platform_interface.dart';
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_intercept_to_curl/dio_intercept_to_curl.dart';
@@ -14,11 +13,6 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 /// @param _dio as static
 ///
 abstract class DioBuilder {
-  Future<String?> getPlatformVersion() {
-    return DioBuilderPlatform.instance.getPlatformVersion();
-  }
-
-
   /// pre-define url with live, stage, and dev
   /// must be initialized
   /// at least any one of them
