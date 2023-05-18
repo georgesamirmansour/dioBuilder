@@ -197,11 +197,12 @@ abstract class DioBuilder {
 
   /// use this method for build with builder pattern
   /// it build with default config first time
-  void build() {
+  Dio build() {
     addLogger();
     allowRetryInFailed();
     _dio.options = _buildBaseOption();
     _dio.interceptors.add(_interceptorsWrapper);
+    return _dio;
   }
 
   BaseOptions _buildBaseOption() => BaseOptions(
