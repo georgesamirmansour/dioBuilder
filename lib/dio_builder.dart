@@ -3,10 +3,17 @@ import 'dart:io';
 
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_http2_adapter/dio_http2_adapter.dart';
 import 'package:dio_intercept_to_curl/dio_intercept_to_curl.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
+export 'dart:io';
+export 'package:chucker_flutter/chucker_flutter.dart';
+export 'package:dio/dio.dart';
+export 'package:dio_intercept_to_curl/dio_intercept_to_curl.dart';
+export 'package:dio_smart_retry/dio_smart_retry.dart';
+export 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 /// class as singleton using factory design pattern
 /// @see DioBuilder using builder design pattern
@@ -22,6 +29,7 @@ abstract class DioBuilder {
   static String _liveUrl = "";
   static String _stageUrl = "";
   static String _testUrl = "";
+  static bool _allowBadRequest = false;
 
 
   static final Dio _dio = Dio();
@@ -65,12 +73,6 @@ abstract class DioBuilder {
 
   }
 
-  void allowedSHAFingerprints(List<String> allowedSHAFingerprints) {
-    _dio.interceptors.add(CertificatePinningInterceptor(
-        allowedSHAFingerprints: allowedSHAFingerprints));
-
-  }
-
   /// allow retry of connection in case of internet failed or error from api
   /// default retry as default 3
   void allowRetryInFailed({int retryCount = 3}) {
@@ -93,6 +95,10 @@ abstract class DioBuilder {
   void setTestUrls(String baseUrl) {
     _testUrl = baseUrl;
 
+  }
+
+  void allowBadRequest(bool value){
+    _allowBadRequest = value;
   }
 
   /// in case you have a mirror of your production url but is only
@@ -202,6 +208,12 @@ abstract class DioBuilder {
     allowRetryInFailed();
     _dio.options = _buildBaseOption();
     _dio.interceptors.add(_interceptorsWrapper);
+    if(_allowBadRequest){
+      _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
+        idleTimeout: const Duration(seconds: 10),
+        onClientCreate:  (_, config) => config.onBadCertificate = (_) => true,
+      ));
+    }
     return _dio;
   }
 
@@ -240,14 +252,14 @@ abstract class DioBuilder {
   }
 
   InterceptorsWrapper get _interceptorsWrapper => InterceptorsWrapper(
-    onError: (e, handler) => handleOnError(e, handler),
+    onError: (dioException, handler) => handleOnError(dioException, handler),
     onRequest: (options, handler) => handleOnRequest(options, handler),
-    onResponse: (e, handler) => handleOnResponse(e, handler),
+    onResponse: (response, handler) => handleOnResponse(response, handler),
   );
 
-  handleOnError(DioError e, ErrorInterceptorHandler handler);
+  handleOnError(DioException dioException, ErrorInterceptorHandler handler);
 
   handleOnRequest(RequestOptions options, RequestInterceptorHandler handler);
 
-  handleOnResponse(Response<dynamic> e, ResponseInterceptorHandler handler);
+  handleOnResponse(Response<dynamic> response, ResponseInterceptorHandler handler);
 }

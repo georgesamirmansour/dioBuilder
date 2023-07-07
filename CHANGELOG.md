@@ -4,3 +4,21 @@
 ## 0.0.2
 
 * TODO: Describe initial release.
+
+## 0.0.3
+
+* fixing issue with import library
+* update dependencies
+
+## 0.0.4
+
+* fixing issue with import library
+* update dependencies
+## 0.0.5
+
+* fixing issue with import library
+* update dependencies
+
+## 0.0.6
+
+* adding http2 adapter to allow bad request using dio
