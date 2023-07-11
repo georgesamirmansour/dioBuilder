@@ -4,14 +4,12 @@ import 'dart:io';
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
-import 'package:dio_intercept_to_curl/dio_intercept_to_curl.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 export 'dart:io';
 export 'package:chucker_flutter/chucker_flutter.dart';
 export 'package:dio/dio.dart';
-export 'package:dio_intercept_to_curl/dio_intercept_to_curl.dart';
 export 'package:dio_smart_retry/dio_smart_retry.dart';
 export 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -53,24 +51,20 @@ abstract class DioBuilder {
   /// allow to log the http request and response in terminal with single line
   /// in case of using chunker please review library
   /// curl logs appears in terminal you can copy and past it to use it in post man
-  void addLogger({bool allowChucker = true, bool allowCurlLog = true}) {
+  void addLogger({bool allowChucker = true, bool printLog = true}) {
     if (allowChucker) {
       _dio.interceptors.add(ChuckerDioInterceptor());
     }
-    if (allowCurlLog) {
-      _dio.interceptors
-          .add(DioInterceptToCurl(convertFormData: true, printOnSuccess: true));
-    } else {
+    if (printLog) {
       _dio.interceptors.add(PrettyDioLogger(
           requestHeader: true,
           requestBody: true,
           responseBody: true,
-          responseHeader: false,
+          responseHeader: true,
           error: true,
           compact: true,
           maxWidth: 90));
     }
-
   }
 
   /// allow retry of connection in case of internet failed or error from api

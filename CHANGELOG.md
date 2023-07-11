@@ -22,3 +22,7 @@
 ## 0.0.6
 
 * adding http2 adapter to allow bad request using dio
+
+## 1.0.0
+
+* remove curl and allow print logger
