@@ -26,3 +26,8 @@
 ## 1.0.0
 
 * remove curl and allow print logger
+
+## 2.0.0
+
+* enhance code 
+* add full readme and customization
