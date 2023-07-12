@@ -353,9 +353,9 @@ Returns the built Dio client.
 
 ## Contributing
 
-Contributions to DioBuilder are welcome! If you encounter any bugs or have suggestions for improvements, please create a new issue on the [GitHub repository](https://github.com/your-username/your-repo).
+Contributions to DioBuilder are welcome! If you encounter any bugs or have suggestions for improvements, please create a new issue on the [GitHub repository](https://github.com/georgesamirmansour/dioBuilder).
 
-If you would like to contribute code to DioBuilder, please follow the [contribution guidelines](https://github.com/your-username/your-repo/blob/main/CONTRIBUTING.md).
+If you would like to contribute code to DioBuilder, please follow the [contribution guidelines](https://github.com/georgesamirmansour/dioBuilder/blob/master/CONTRIBUTING.md).
 
 ## License
 

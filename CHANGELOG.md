@@ -31,3 +31,8 @@
 
 * enhance code 
 * add full readme and customization
+
+## 2.0.1
+
+* enhance code
+* add full readme and customization
