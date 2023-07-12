@@ -1,6 +1,6 @@
 name: dio_builder
 description: Dio builder is support plugin using dio, it helps to easy config dio in your project.
-version: 2.0.1
+version: 2.0.2
 homepage: https://github.com/georgesamirmansour/dioBuilder.git
 
 environment:
