@@ -38,6 +38,8 @@ abstract class DioBuilder {
   Map<String, dynamic>? _queryParameters;
   bool _receiveDataWhenStatusError = true;
   int _defaultTimeOut = 15;
+  bool _allowRetry = true;
+
 
   /// Adds a logger interceptor to the Dio client for logging HTTP requests and responses.
   /// The logger can be printed to the console or integrated with the Chucker library for more detailed logs.
@@ -62,14 +64,16 @@ abstract class DioBuilder {
   /// Adds a retry interceptor to the Dio client for automatically retrying failed requests.
   /// The number of retries can be specified with the `retryCount` parameter (default is 3).
   DioBuilder allowRetryInFailed({int retryCount = 3}) {
-    _dio.interceptors.add(RetryInterceptor(
-      dio: _dio,
-      retries: retryCount,
-      retryDelays: List.generate(
-        retryCount,
-        (index) => Duration(seconds: retryCount + index),
-      ),
-    ));
+    if(_allowRetry){
+      _dio.interceptors.add(RetryInterceptor(
+        dio: _dio,
+        retries: retryCount,
+        retryDelays: List.generate(
+          retryCount,
+              (index) => Duration(seconds: retryCount + index),
+        ),
+      ));
+    }
     return this;
   }
 
@@ -88,6 +92,11 @@ abstract class DioBuilder {
   /// Sets the base URL for the staging environment.
   DioBuilder setBaseStageUrl(String baseUrl) {
     _stageUrl = baseUrl;
+    return this;
+  }
+
+  DioBuilder allowRetry(bool allowRetry){
+    _allowRetry = allowRetry;
     return this;
   }
 

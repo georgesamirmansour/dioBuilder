@@ -1,6 +1,6 @@
 name: dio_builder
 description: Dio builder is support plugin using dio, it helps to easy config dio in your project.
-version: 2.0.2
+version: 3.0.0
 homepage: https://github.com/georgesamirmansour/dioBuilder.git
 
 environment:
@@ -15,6 +15,7 @@ dependencies:
   dio_smart_retry: ^5.0.0
   chucker_flutter: ^1.5.2
   dio_http2_adapter: ^2.3.0
+  meta: ^1.9.1
 
 dev_dependencies:
   flutter_test:
