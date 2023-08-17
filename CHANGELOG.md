@@ -41,3 +41,7 @@
 
 * enhance code
 * add full readme and customization
+
+## 2.0.3
+
+* fixed issue with logger that log many times

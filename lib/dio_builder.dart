@@ -26,6 +26,20 @@ abstract class DioBuilder {
 
   final Dio _dio = Dio();
 
+
+  DioBuilder(){
+    addLogger();
+    allowRetryInFailed();
+    _dio.options = _buildBaseOption();
+    _dio.interceptors.add(_interceptorsWrapper);
+    if (_allowBadRequest) {
+      _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
+        idleTimeout: const Duration(seconds: 10),
+        onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
+      ));
+    }
+  }
+
   ResponseType _responseType = ResponseType.json;
   String _contentType = "application/json";
   bool _persistentConnection = true;
@@ -200,16 +214,6 @@ abstract class DioBuilder {
 
   /// Builds the Dio client with the configured options and interceptors.
   Dio build() {
-    addLogger();
-    allowRetryInFailed();
-    _dio.options = _buildBaseOption();
-    _dio.interceptors.add(_interceptorsWrapper);
-    if (_allowBadRequest) {
-      _dio.httpClientAdapter = Http2Adapter(ConnectionManager(
-        idleTimeout: const Duration(seconds: 10),
-        onClientCreate: (_, config) => config.onBadCertificate = (_) => true,
-      ));
-    }
     return _dio;
   }
 
