@@ -23,11 +23,11 @@ abstract class DioBuilder {
   static String _liveUrl = "";
   static String _stageUrl = "";
   static String _testUrl = "";
+  bool _allowRetry = false;
 
   final Dio _dio = Dio();
 
-
-  DioBuilder(){
+  DioBuilder() {
     addLogger();
     allowRetryInFailed();
     _dio.options = _buildBaseOption();
@@ -76,14 +76,16 @@ abstract class DioBuilder {
   /// Adds a retry interceptor to the Dio client for automatically retrying failed requests.
   /// The number of retries can be specified with the `retryCount` parameter (default is 3).
   DioBuilder allowRetryInFailed({int retryCount = 3}) {
-    _dio.interceptors.add(RetryInterceptor(
-      dio: _dio,
-      retries: retryCount,
-      retryDelays: List.generate(
-        retryCount,
-        (index) => Duration(seconds: retryCount + index),
-      ),
-    ));
+    if (_allowRetry) {
+      _dio.interceptors.add(RetryInterceptor(
+        dio: _dio,
+        retries: retryCount,
+        retryDelays: List.generate(
+          retryCount,
+          (index) => Duration(seconds: retryCount + index),
+        ),
+      ));
+    }
     return this;
   }
 
@@ -181,6 +183,11 @@ abstract class DioBuilder {
   /// Sets the query parameters to be included in the requests.
   DioBuilder queryParameters(Map<String, dynamic> value) {
     _queryParameters = value;
+    return this;
+  }
+
+  DioBuilder allowRetry(bool value) {
+    _allowRetry = value;
     return this;
   }
 
