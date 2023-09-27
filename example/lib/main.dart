@@ -9,20 +9,17 @@ void main() {
 
 // Example usage of the DioModule class
 void exampleUsage() async {
-  final dioModule = DioModule();
-  dioModule.setBaseLiveUrl("https://api.example.com");
-  dioModule.addLogger();
-  dioModule.allowRetryInFailed();
-  dioModule.setDefaultTimeOut(10);
+  final dioClient = DioClient();
 
-  final responseData = await dioModule.getData('/users');
+
+  final responseData = await dioClient.getData('/users');
   print(responseData);
 
   final postData = {
     'name': 'John Doe',
     'email': 'john@example.com',
   };
-  final response = await dioModule.postData('/users', postData);
+  final response = await dioClient.postData('/users', postData);
   print(response);
 }
 
@@ -54,14 +51,21 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class DioModule extends DioBuilder {
+class DioClient extends DioBuilder {
   // Custom methods or properties specific to your Dio module can be added here
+
+  DioClient(){
+    baseUrl = 'https://api.example.com';
+    addLogger();
+    allowRetryInFailed();
+    setDefaultTimeOut(10);
+  }
 
   /// Performs a GET request to retrieve data from the specified [endpoint].
   /// Returns the response data as a dynamic object.
   Future<dynamic> getData(String endpoint) async {
     try {
-      final response = await build().get(endpoint);
+      final response = await get(endPoint: endpoint);
       return response.data;
     } catch (e) {
       // Handle the error
@@ -74,7 +78,7 @@ class DioModule extends DioBuilder {
   /// Returns the response data as a dynamic object.
   Future<dynamic> postData(String endpoint, dynamic data) async {
     try {
-      final response = await build().post(endpoint, data: data);
+      final response = await post(endPoint: endpoint, data: data);
       return response.data;
     } catch (e) {
       // Handle the error
@@ -83,22 +87,20 @@ class DioModule extends DioBuilder {
   }
 
   @override
-  void handleOnError(
-      DioException dioException, ErrorInterceptorHandler handler) {
-    // TODO: implement handleOnError
+  void handleOnResponse(
+      Response<dynamic> response, ResponseInterceptorHandler handler) {
   }
 
   @override
   void handleOnRequest(
       RequestOptions options, RequestInterceptorHandler handler) {
-    // TODO: implement handleOnRequest
+
   }
 
   @override
-  void handleOnResponse(
-      Response<dynamic> response, ResponseInterceptorHandler handler) {
-    // TODO: implement handleOnResponse
+  void handleOnError(
+      DioException dioException, ErrorInterceptorHandler handler) {
   }
 
-  // Add more methods for different HTTP request types and functionalities as needed
+// Add more methods for different HTTP request types and functionalities as needed
 }

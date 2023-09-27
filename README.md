@@ -1,355 +1,147 @@
+```markdown
 # DioBuilder
 
-DioBuilder is a Dart library that provides a builder pattern for configuring and creating instances of the Dio HTTP client. It abstracts common configurations and interceptors for making HTTP requests.
-
-## Features
-
-- Builder pattern for configuring and creating Dio instances.
-- Configuration options for setting base URLs, response types, content types, timeouts, headers, and more.
-- Interceptors for logging HTTP requests and responses.
-- Interceptor for automatically retrying failed requests.
-- Support for handling bad SSL certificates or invalid HTTPS connections (optional).
-- Environment-specific base URLs for live, test, and staging environments.
+DioBuilder is a Dart library that provides a builder pattern for configuring and creating instances of the Dio HTTP client. It abstracts common configurations and interceptors for making HTTP requests, making it easier to set up and use Dio for your network requests.
 
 ## Installation
 
-To use DioBuilder in your Dart project, follow these steps:
-
-1. Add the `dio_builder` package to your `pubspec.yaml` file:
+Add `dio_builder` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  dio_builder: ^2.0.0
+  dio_builder: ^3.0.0 # Replace with the latest version
 ```
 
-2. Run `dart pub get` to fetch the package dependencies.
+Then, run `flutter pub get` to install the dependency.
 
 ## Usage
 
-1. Import the package in your Dart file:
+1. Import the necessary libraries:
 
 ```dart
 import 'package:dio_builder/dio_builder.dart';
+import 'package:dio/dio.dart';
 ```
 
-2. Configure the Dio client using the builder pattern:
+2. Initialize the DioBuilder:
 
 ```dart
-void configureDio() {
-  final dioBuilder = DioBuilder();
+final dioBuilder = DioBuilder();
+dioBuilder.initialize();
+```
 
-  // Set the base URL for the live environment
-  dioBuilder.setBaseLiveUrl('https://api.example.com/live');
+3. Configure and build your Dio instance:
 
-  // Set the base URL for the test environment
-  dioBuilder.setBaseTestUrl('https://api.example.com/test');
+```dart
+final dio = dioBuilder
+    .setBaseUrl('https://api.example.com')
+    .setContentType('application/json')
+    .setHeaders({'Authorization': 'Bearer YOUR_ACCESS_TOKEN'})
+    .build();
+```
 
-  // Enable the logger for HTTP requests and responses
-  dioBuilder.addLogger();
+4. Use the Dio instance to make HTTP requests:
 
-  // Enable retrying failed requests
-  dioBuilder.allowRetryInFailed();
-
-  // Set the default timeout for network requests
-  dioBuilder.setDefaultTimeOut(10);
-
-  // Set custom headers
-  dioBuilder.setHeaders({'Authorization': 'Bearer TOKEN'});
-
-  // Build the Dio client
-  final dio = dioBuilder.build();
-
-  // Use the Dio client to make HTTP requests
-  dio.get('/users').then((response) {
-    print(response.data);
-  }).catchError((error) {
-    print(error);
-  });
+```dart
+try {
+  final response = await dio.get('/some-endpoint');
+  // Handle the response
+} catch (e) {
+  // Handle errors
 }
 ```
 
-3. Handling Bad SSL Certificates or Invalid HTTPS Connections (Optional)
+## Configuration
 
-To handle bad SSL certificates or invalid HTTPS connections, you can enable the `allowBadRequest` option:
+DioBuilder provides various methods to configure your Dio instance:
 
-```dart
-dioBuilder.allowBadRequest(true);
-```
+- `setBaseUrl`: Set the base URL for your API.
+- `setContentType`: Set the content type for requests.
+- `setHeaders`: Set custom headers for requests.
+- `setFollowRedirects`: Enable or disable following redirects.
+- `setExtras`: Set extra options for requests.
+- `setQueryParameters`: Set query parameters for requests.
+- `setListFormat`: Set the list format for serialization.
+- `setMethod`: Set the HTTP method for requests.
+- `setDefaultTimeOut`: Set the default timeout for network requests.
+- `setResponseType`: Set the response type for requests.
+- `setPersistentConnection`: Enable or disable persistent connections.
+- `setMaxRedirects`: Set the maximum number of redirects to follow.
+- `setReceiveDataWhenStatusError`: Set whether to receive data when the status is an error.
 
-**Note:** This should only be used for testing or development purposes and should be used with caution.
+You can chain these methods together to configure DioBuilder according to your requirements.
 
-## Methods
+## Interceptors
 
-### addLogger
+DioBuilder includes some common interceptors by default:
 
-```dart
-DioBuilder addLogger({bool allowChucker = true, bool printLog = true})
-```
+- Logger Interceptor: Logs HTTP requests and responses.
+- Retry Interceptor: Automatically retries failed requests.
 
-Adds a logger interceptor to the Dio client for logging HTTP requests and responses. The logger can be printed to the console or integrated with the Chucker library for more detailed logs.
+You can add or remove interceptors using the `addLogger` and `allowRetryInFailed` methods.
 
-- `allowChucker` (optional): Enables or disables Chucker integration (default is `true`).
-- `printLog` (optional): Enables or disables printing logs to the console (default is `true`).
+## Examples
 
-Returns the `DioBuilder` instance.
+Here are some examples of making different types of requests using DioBuilder:
 
-### allowRetryInFailed
-
-```dart
-DioBuilder allowRetryInFailed({int retryCount = 3})
-```
-
-Adds a retry interceptor to the Dio client for automatically retrying failed requests. The number of retries can be specified with the `retryCount` parameter (default is 3).
-
-- `retryCount` (optional): The number of retries to attempt (default is 3).
-
-Returns the `DioBuilder` instance.
-
-### setBaseLiveUrl
+### GET Request
 
 ```dart
-void setBaseLiveUrl(String baseUrl)
+final response = await dioBuilder.get(
+  endPoint: '/get-endpoint',
+  data: {'param1': 'value1'},
+);
 ```
 
-Sets the base URL for the live environment. This URL is used when the application is in production and deployed to app stores.
-
-- `baseUrl`: The base URL for the live environment.
-
-### setBaseTestUrl
+### POST Request
 
 ```dart
-DioBuilder setBaseTestUrl(String baseUrl)
+final response = await dioBuilder.post(
+  endPoint: '/post-endpoint',
+  data: {'param1': 'value1'},
+);
 ```
 
-Sets the base URL for the testing or development environment.
-
-- `baseUrl`: The base URL for the testing or development environment.
-
-Returns the `DioBuilder` instance.
-
-### setBaseStageUrl
+### PUT Request
 
 ```dart
-DioBuilder setBaseStageUrl(String baseUrl)
+final response = await dioBuilder.put(
+  endPoint: '/put-endpoint',
+  data: {'param1': 'value1'},
+);
 ```
 
-Sets the base URL for the staging environment.
-
-- `baseUrl`: The base URL for the staging environment.
-
-Returns the `DioBuilder` instance.
-
-### allowBadRequest
+### DELETE Request
 
 ```dart
-DioBuilder allowBadRequest(bool value)
+final response = await dioBuilder.delete(
+  endPoint: '/delete-endpoint',
+  data: {'param1': 'value1'},
+);
 ```
 
-Enables or disables the ability to handle bad SSL certificates or invalid HTTPS connections. This can be useful for testing or development purposes but should be used with caution.
+### Handling Responses
 
-- `value`: `true` to allow bad SSL certificates or invalid HTTPS connections, `false` to disallow.
-
-Returns the `DioBuilder` instance.
-
-### setIsLive
+You can access the response data using `response.data`. For example:
 
 ```dart
-DioBuilder setIsLive(bool value)
+final responseData = response.data;
 ```
 
-Sets the environment to live mode.
+### Handling Errors
 
-- `value`: `true` to set the environment to live mode, `false` to unset.
-
-Returns the `DioBuilder` instance.
-
-### setIsTest
+If an error occurs during the request, it will be caught in the `catch` block. For example:
 
 ```dart
-DioBuilder setIsTest(bool value)
+try {
+  final response = await dioBuilder.get(
+    endPoint: '/non-existent-endpoint',
+    data: {'param1': 'value1'},
+  );
+} catch (e) {
+  // Handle the error
+}
 ```
-
-Sets the environment to test mode.
-
-- `value`: `true` to set the environment to test mode, `false` to unset.
-
-Returns the `DioBuilder` instance.
-
-### setIsStage
-
-```dart
-DioBuilder setIsStage(bool value)
-```
-
-Sets the environment to stage mode.
-
-- `value`: `true` to set the environment to stage mode, `false` to unset.
-
-Returns the `DioBuilder` instance.
-
-### setDefaultTimeOut
-
-```dart
-DioBuilder setDefaultTimeOut(int value)
-```
-
-Sets the default timeout for network requests, in seconds.
-
-- `value`: The default timeout value in seconds.
-
-Returns the `DioBuilder` instance.
-
-### setResponseType
-
-```dart
-DioBuilder setResponseType(ResponseType value)
-```
-
-Sets the response type for the HTTP requests.
-
-- `value`: The response type.
-
-Returns the `DioBuilder` instance.
-
-### setContentType
-
-```dart
-DioBuilder setContentType(String value)
-```
-
-Sets the content type for the HTTP requests.
-
-- `value`: The content type.
-
-Returns the `DioBuilder` instance.
-
-### setPersistentConnection
-
-```dart
-DioBuilder setPersistentConnection(bool value)
-```
-
-Sets whether the connection should be persistent or not.
-
-- `value`: `true` to enable persistent connection, `false` to disable.
-
-Returns the `DioBuilder` instance.
-
-### setFollowRedirects
-
-```dart
-DioBuilder setFollowRedirects(bool value)
-```
-
-Sets whether the client should follow redirects or not.
-
-- `value`: `true` to enable follow redirects, `false` to disable.
-
-Returns the `DioBuilder` instance.
-
-### setMaxRedirects
-
-```dart
-DioBuilder setMaxRedirects(int value)
-```
-
-Sets the maximum number of redirects to follow.
-
-- `value`: The maximum number of redirects.
-
-Returns the `DioBuilder` instance.
-
-### setExtras
-
-```dart
-DioBuilder setExtras(Map<String, dynamic> value)
-```
-
-Sets extra options to be included in the requests.
-
-- `value`: A map of extra options.
-
-Returns the `DioBuilder` instance.
-
-### setHeaders
-
-```dart
-DioBuilder setHeaders(Map<String, dynamic> value)
-```
-
-Sets the headers to be included in the requests.
-
-- `value`: A map of headers.
-
-Returns the `DioBuilder` instance.
-
-### queryParameters
-
-```dart
-DioBuilder queryParameters(Map<String, dynamic> value)
-```
-
-Sets the query parameters to be
-
-included in the requests.
-
-- `value`: A map of query parameters.
-
-Returns the `DioBuilder` instance.
-
-### setListFormat
-
-```dart
-DioBuilder setListFormat(ListFormat value)
-```
-
-Sets the format for lists serialization in the requests.
-
-- `value`: The list format.
-
-Returns the `DioBuilder` instance.
-
-### setMethod
-
-```dart
-DioBuilder setMethod(String value)
-```
-
-Sets the HTTP method for the requests.
-
-- `value`: The HTTP method.
-
-Returns the `DioBuilder` instance.
-
-### setReceiveDataWhenStatusError
-
-```dart
-void setReceiveDataWhenStatusError(bool value)
-```
-
-Sets whether to receive the response data when the status is an error or not.
-
-- `value`: `true` to receive data when the status is an error, `false` to discard data.
-
-### checkInternetConnection
-
-```dart
-Future<bool> checkInternetConnection()
-```
-
-Checks if there is an internet connection between the client and server. Returns `true` if there is a connection, otherwise `false`.
-
-Returns a `Future` that resolves to a boolean indicating the internet connection status.
-
-### build
-
-```dart
-Dio build()
-```
-
-Builds the Dio client with the configured options and interceptors.
-
-Returns the built Dio client.
 
 ## Contributing
 
@@ -361,9 +153,3 @@ If you would like to contribute code to DioBuilder, please follow the [contribut
 
 DioBuilder is released under the [MIT License](https://opensource.org/licenses/MIT). See the [LICENSE](https://github.com/georgesamirmansour/dioBuilder/blob/master/LICENSE) file for more details.
 ```
-
-Make sure to replace `your-username` and `your-repo` with your actual GitHub username and repository name.
-
-Feel free to customize the README file according to your project's specific details and requirements.
-
-I hope this README provides a comprehensive overview of the code and its methods. Let me know if you have any further questions or need any additional assistance!

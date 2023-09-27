@@ -53,3 +53,20 @@
 ## 2.0.5
 
 * fixed issue with logger that log many times
+
+## 2.0.6
+* added  initialize() function to init dio
+* fixed issue with logger that log many times
+
+## 2.0.7
+* added  initialize() function to init dio
+* fixed issue with logger that log many times
+
+## 2.0.8
+* added  initialize() function to init dio
+* fixed issue with logger that log many times
+
+## 3.0.0
+* added  all http methods to easy access from plugin
+* removed abstract class
+* make only one base url for it
