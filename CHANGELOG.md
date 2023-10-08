@@ -70,3 +70,6 @@
 * added  all http methods to easy access from plugin
 * removed abstract class
 * make only one base url for it
+
+## 3.0.1
+* fixed issue with ios build
