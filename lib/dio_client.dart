@@ -16,7 +16,7 @@ Future<Response<T>> post(
     Function(int count, int total)? onSendProgress,
     Function(int count, int total)? onReceiveProgress}) async {
   try {
-    final response = await DioBuilder._dio.post<T>(
+    final response = await DioBuilder()._dio.post<T>(
       endPoint,
       data: data,
       cancelToken: cancelToken,
@@ -47,11 +47,11 @@ Future<Response<T>> delete(
     required Map<String, dynamic> data,
     CancelToken? cancelToken}) async {
   try {
-    final response = await DioBuilder._dio.delete<T>(
-      endPoint,
-      data: data,
-      cancelToken: cancelToken,
-    );
+    final response = await DioBuilder()._dio.delete<T>(
+          endPoint,
+          data: data,
+          cancelToken: cancelToken,
+        );
     return response;
   } catch (e) {
     rethrow;
@@ -69,11 +69,11 @@ Future<Response<T>> head(
     required Map<String, dynamic> data,
     CancelToken? cancelToken}) async {
   try {
-    final response = await DioBuilder._dio.head<T>(
-      endPoint,
-      data: data,
-      cancelToken: cancelToken,
-    );
+    final response = await DioBuilder()._dio.head<T>(
+          endPoint,
+          data: data,
+          cancelToken: cancelToken,
+        );
     return response;
   } catch (e) {
     rethrow;
@@ -94,13 +94,13 @@ Future<Response<T>> request(
     Function(int count, int total)? onSendProgress,
     Function(int count, int total)? onReceiveProgress}) async {
   try {
-    final response = await DioBuilder._dio.request<T>(
-      endPoint,
-      data: data,
-      cancelToken: cancelToken,
-      onReceiveProgress: onReceiveProgress,
-      onSendProgress: onSendProgress,
-    );
+    final response = await DioBuilder()._dio.request<T>(
+          endPoint,
+          data: data,
+          cancelToken: cancelToken,
+          onReceiveProgress: onReceiveProgress,
+          onSendProgress: onSendProgress,
+        );
     return response;
   } catch (e) {
     rethrow;
@@ -116,18 +116,18 @@ Future<Response<T>> request(
 /// [onReceiveProgress] - (Optional) A callback to track the receive progress.
 Future<Response<T>> put(
     {required String endPoint,
-      required Map<String, dynamic> data,
-      CancelToken? cancelToken,
-      Function(int count, int total)? onSendProgress,
-      Function(int count, int total)? onReceiveProgress}) async {
+    required Map<String, dynamic> data,
+    CancelToken? cancelToken,
+    Function(int count, int total)? onSendProgress,
+    Function(int count, int total)? onReceiveProgress}) async {
   try {
-    final response = await DioBuilder._dio.put<T>(
-      endPoint,
-      data: data,
-      cancelToken: cancelToken,
-      onReceiveProgress: onReceiveProgress,
-      onSendProgress: onSendProgress,
-    );
+    final response = await DioBuilder()._dio.put<T>(
+          endPoint,
+          data: data,
+          cancelToken: cancelToken,
+          onReceiveProgress: onReceiveProgress,
+          onSendProgress: onSendProgress,
+        );
     return response;
   } catch (e) {
     rethrow;
@@ -143,18 +143,18 @@ Future<Response<T>> put(
 /// [onReceiveProgress] - (Optional) A callback to track the receive progress.
 Future<Response<T>> patch(
     {required String endPoint,
-      required Map<String, dynamic> data,
-      CancelToken? cancelToken,
-      Function(int count, int total)? onSendProgress,
-      Function(int count, int total)? onReceiveProgress}) async {
+    required Map<String, dynamic> data,
+    CancelToken? cancelToken,
+    Function(int count, int total)? onSendProgress,
+    Function(int count, int total)? onReceiveProgress}) async {
   try {
-    final response = await DioBuilder._dio.patch<T>(
-      endPoint,
-      data: data,
-      cancelToken: cancelToken,
-      onReceiveProgress: onReceiveProgress,
-      onSendProgress: onSendProgress,
-    );
+    final response = await DioBuilder()._dio.patch<T>(
+          endPoint,
+          data: data,
+          cancelToken: cancelToken,
+          onReceiveProgress: onReceiveProgress,
+          onSendProgress: onSendProgress,
+        );
     return response;
   } catch (e) {
     rethrow;
@@ -171,7 +171,7 @@ Future<Response<T>> get(
     CancelToken? cancelToken,
     Function(int count, int total)? onReceiveProgress}) async {
   try {
-    final response = await DioBuilder._dio.get<T>(
+    final response = await DioBuilder()._dio.get<T>(
       endPoint,
       cancelToken: cancelToken,
       onReceiveProgress: (count, total) {

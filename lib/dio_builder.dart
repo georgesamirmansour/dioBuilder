@@ -17,12 +17,10 @@ part 'dio_client.dart';
 /// The `DioBuilder` class provides a builder pattern for configuring and creating instances of the Dio HTTP client.
 /// It abstracts common configurations and interceptors for making HTTP requests.
 class DioBuilder {
-  static bool _allowBadRequest = false;
-  static String _baseApiUrl = ''; // Stores the base API URL
+  bool _allowBadRequest = false;
+  String _baseApiUrl = ''; // Stores the base API URL
   bool _allowRetry = false;
-
-  static final Dio _dio = Dio();
-
+  final Dio _dio = Dio();
   ResponseType _responseType = ResponseType.json;
   String _contentType = "application/json";
   bool _persistentConnection = true;

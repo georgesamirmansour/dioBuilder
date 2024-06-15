@@ -73,3 +73,11 @@
 
 ## 3.0.1
 * fixed issue with ios build
+
+## 3.0.2
+* remove static elements
+## 3.0.3
+* remove static elements
+
+## 3.0.4
+* remove static elements
